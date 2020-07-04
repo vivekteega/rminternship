@@ -102,7 +102,8 @@
 			<article id="work">
 				<h2 class="major">Projects</h2>
 				<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
-				<p>This is some random text which will be replaced with much more creative introduction to the Project List</p>
+				<p>This is some random text which will be replaced with much more creative introduction to the Project
+					List</p>
 				<div id='projectlist'>
 				</div>
 			</article>
@@ -121,7 +122,7 @@
 			<!-- Contact -->
 			<article id="contact">
 				<h2 class="major">Apply</h2>
-				<form method="post" action="#">
+				<form method="post" action="#" id='applicationform'>
 					<div class="fields">
 						<div class="field half">
 							<label for="name">Name</label>
@@ -132,24 +133,24 @@
 							<input type="text" name="email" id="email" />
 						</div>
 						<div class="field half">
-							<label for="name">College</label>
-							<input type="text" name="name" id="name" />
+							<label for="college">College</label>
+							<input type="text" name="college" id="college" />
 						</div>
 						<div class="field half">
-							<label for="email">Course</label>
-							<input type="text" name="email" id="email" />
+							<label for="course">Course</label>
+							<input type="text" name="course" id="course" />
 						</div>
 						<div class="field half">
-							<label for="name">DOB</label>
-							<input type="text" name="name" id="name" placeholder="DD/MM/YYYY" />
+							<label for="dob">DOB</label>
+							<input type="text" name="dob" id="dob" placeholder="DD/MM/YYYY" />
 						</div>
 						<div class="field half">
-							<label for="email">WhatsApp Number</label>
-							<input type="text" name="email" id="email" />
+							<label for="whatsapp">WhatsApp Number</label>
+							<input type="text" name="whatsapp" id="whatsapp" />
 						</div>
 						<div class="field half">
-							<label for="email">*FLO ID</label>
-							<input type="text" name="email" id="email" />
+							<label for="floid">*FLO ID</label>
+							<input type="text" name="floid" id="floid" />
 						</div>
 						<!--<div class="field" style='display:"none"'>
 							<label for="message">Message</label>
@@ -158,18 +159,18 @@
 					</div>
 					<ul class="actions">
 						<li><input type="submit" value="Apply" class="primary" /></li>
-						<li><input type="reset" value="Reset" /></li>
+						<li><input type="reset" value="Reset" id='resetform' /></li>
 					</ul>
 				</form>
-				<ul class="icons">
+				<!--<ul class="icons">
 					<li><a href="https://twitter.com/ranchimallFLO" target="_blank" class="icon brands fa-twitter"><span
 								class="label">Twitter</span></a></li>
 					<li><a href="https://facebook.com/ranchimall/" target="_blank"
 							class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-					<!--<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>-->
+					<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
 					<li><a href="https://github.com/ranchimall/" target="_blank" class="icon brands fa-github"><span
 								class="label">GitHub</span></a></li>
-				</ul>
+				</ul>-->
 			</article>
 
 			<!-- Elements -->
@@ -9548,10 +9549,41 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 
 	<script>
 
-		async function loadRIBC(){
+		/*async function loadRIBC() {
 			floCloudAPI.requestObjectData('RIBC', options = { senderIDs: false, receiverID: "FMeiptdJNtYQEtzyYAVNP8fjsDJ1i4EPfE", application: 'RIBC' })
+		}*/
+
+		async function fetchInternApplicants() {
+			let applicants = await floCloudAPI.requestGeneralData('test')
+			debugger;
 		}
-	
+
+		//Handler for Applicant form submission
+		document.getElementById('applicationform').addEventListener('submit', (ev) => {
+			ev.preventDefault()
+			aname = document.getElementById('name').value
+			aemail = document.getElementById('email').value
+			acollege = document.getElementById('college').value
+			acourse = document.getElementById('course').value
+			adob = document.getElementById('dob').value
+			awhatsapp = document.getElementById('whatsapp').value
+			afloid = document.getElementById('floid').value
+
+			let detailsObj = {
+				'name' : aname,
+				'email' : aemail,
+				'college' : acollege,
+				'course' : acourse,
+				'dob' : adob,
+				'whatsapp' : awhatsapp
+			}
+
+			let mainObj = {}
+			mainObj[afloid] = detailsObj
+			floCloudAPI.sendGeneralData(JSON.stringify(mainObj), 'test1')	
+			document.getElementById('resetform').click()		
+		})
+
 	</script>
 
 
@@ -9567,15 +9599,24 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 				alert(`Welcome FLO_ID: ${myFloID}`)
 
 				//App functions....
-				loadRIBC()
-				.then(loadres => {
+				/*loadRIBC()
+					.then(loadres => {
+						
+
+					}) */
+
+				let ribcAppdata = floCloudAPI.requestObjectData('RIBC', options = { senderIDs: false, receiverID: "FMeiptdJNtYQEtzyYAVNP8fjsDJ1i4EPfE", application: 'RIBC' })
+				let ribcGendata = floCloudAPI.requestGeneralData('test')
+
+				Promise.all([ribcAppdata, ribcGendata]).then((values) => {
+					console.log("Hey I'm here, the promises just got resolved")
+					console.log(values)
 					let projectDetails = floGlobals.appObjects.RIBC.projectDetails
 					let projectDetailsKeys = Object.keys(projectDetails)
-					console.log('hey im here')
 
 					let projectlistContainer = document.getElementById('projectlist')
 
-					for(let i=0; i<projectDetailsKeys.length; i++){
+					for (let i = 0; i < projectDetailsKeys.length; i++) {
 
 						newHtml = `<h4>${projectDetails[projectDetailsKeys[i]].projectName}</h4>
 								   <p>${projectDetails[projectDetailsKeys[i]].projectDescription}</p>`
@@ -9583,7 +9624,8 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 						projectlistContainer.innerHTML = projectlistContainer.innerHTML + newHtml
 					}
 
-				})
+				});
+
 			}).catch(error => console.error(error))
 		}
 	</script>
