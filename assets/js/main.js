@@ -300,7 +300,13 @@
 
 				// Prevent clicks from inside article from bubbling.
 					$this.on('click', function(event) {
-						event.stopPropagation();
+						if (!("jugaad" in event.target.dataset)) {
+							// data attribute doesn't exist
+							event.stopPropagation();
+						}
+						else{
+							event.stopPropagation();
+						}
 					});
 
 			});
