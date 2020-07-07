@@ -9525,39 +9525,13 @@
 					/*loader('hide')
 					showPopup('sign_in', 'no');*/
 
-					let container = document.getElementById('priv_key_sign_in'),
-						signIn = document.getElementById('sign_in'),
-						privField = document.getElementById('priv_key_field'),
-						btn = document.getElementById('back_to_main_page');
+					let privField = document.getElementById('priv_key_field');
 
 					/*document.getElementById('guest_btn').onclick = function () {
 						hidePopup('sign_in')
 						reject(null);
 					}*/
 
-
-					privField.addEventListener('keyup', (event) => {
-						checkInput(event)
-					})
-					privField.addEventListener('input', (event) => {
-						checkInput(event)
-					})
-					function checkInput(event) {
-						if (privField.value.trim() !== '')
-							enableBtn('sign_in_btn')
-						else
-							disableBtn('sign_in_btn')
-						if (event.keyCode === 13 || event.key === "Enter") {
-							if (privField.value.trim().length > 40) {
-								resolve(privField.value.trim())
-								hidePopup('sign_in')
-								loader('show')
-							}
-							else {
-								showMessage('error', 'Please enter correct private key.')
-							}
-						}
-					}
 					document.getElementById('signinform').addEventListener('submit', (ev) => {
 						ev.preventDefault()
 						if (privField.value.trim().length > 40) {
