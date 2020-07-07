@@ -300,24 +300,18 @@
 
 				// Prevent clicks from inside article from bubbling.
 					$this.on('click', function(event) {
-						if (!("jugaad" in event.target.dataset)) {
-							// data attribute doesn't exist
 							event.stopPropagation();
-						}
-						else{
-							event.stopPropagation();
-						}
 					});
 
 			});
 
 		// Events.
 			$body.on('click', function(event) {
-
+				if(typeof myFloID != 'undefined'){
 				// Article visible? Hide.
 					if ($body.hasClass('is-article-visible'))
 						$main._hide(true);
-
+				}
 			});
 
 			$window.on('keyup', function(event) {

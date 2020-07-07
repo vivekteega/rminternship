@@ -60,6 +60,8 @@
 			<div class="content">
 				<div class="inner">
 					<h1>Internships @ RanchiMall</h1>
+					<h4 id='welcome_message_top'></h4>
+					<h3 id='welcome_message_bottom'></h3>					
 					<!--<p>A fully responsive site template designed by <a href="https://html5up.net">HTML5 UP</a> and
 						released<br />
 						for free under the <a href="https://html5up.net/license">Creative Commons</a> license.</p>-->
@@ -238,7 +240,7 @@
 
 					<section>
 						<p>Don't have a Private Key yet? <u id="generatenewflopair"
-								style="cursor: pointer;"><strong>Lets get you one</strong></u></p>
+								style="cursor: pointer;"><strong>Click Here</strong></u></p>
 						<h4></h4>
 					</section>
 				</div>
@@ -267,9 +269,7 @@
 						<h4></h4>
 					</section>
 				</div>
-
 			</article>
-
 
 		</div>
 
@@ -284,7 +284,8 @@
 				<li><a href="https://github.com/ranchimall/" target="_blank" class="icon brands fa-github"><span
 							class="label">GitHub</span></a></li>
 			</ul>
-			<p class="copyright">Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+			<!--<p class="copyright">Design: <a href="https://html5up.net">HTML5 UP</a>.</p>-->
+			<p class="copyright" style="cursor: pointer;" id='logout_button'>Logout</p>
 		</footer>
 
 	</div>
@@ -9497,6 +9498,12 @@
 
 		})
 
+		document.getElementById("logout_button").addEventListener('click', (ev) => {
+			floDapps.clearCredentials().then((result) => {
+				alert(result)
+				location.reload()
+			})
+		})
 
 		let myInput = function () {
 			return new Promise((resolve, reject) => {
@@ -9509,13 +9516,14 @@
 						resolve(priv_key_field.value.trim())
 					}
 					else {
-						console.log('Please enter correct private key.')
+						alert('Please enter correct private key.')
 					}
 
 				})
 
 			})
 		}
+
 
 	</script>
 
@@ -9524,6 +9532,7 @@
 		function onLoadStartUp() {
 
 			window.location.href = `${window.location.origin}#signin`
+			document.querySelector("#signin .close").style.display = 'none'
 
 			//floDapps.addStartUpFunction('Sample', Promised Function)
 			//floDapps.setAppObjectStores({sampleObs1:{}, sampleObs2:{options{autoIncrement:true, keyPath:'SampleKey'}, Indexes:{sampleIndex:{}}}})
@@ -9531,9 +9540,10 @@
 
 			floDapps.setCustomPrivKeyInput(myInput)
 			floDapps.launchStartUp().then(result => {
-				console.log(result)
-				console.log(`Welcome FLO_ID: ${myFloID}`)
-
+				document.body.click()
+				document.querySelector("#signin .close").style.display = 'initial'
+				document.getElementById('welcome_message_top').innerText = `Welcome`
+				document.getElementById('welcome_message_bottom').innerText = `${myFloID}`
 				document.getElementById('floid').value = myFloID
 
 				//App functions....
@@ -9557,8 +9567,8 @@
 					for (let i = 0; i < projectDetailsKeys.length; i++) {
 
 						newHtml = `<div class="field">
-								   	  <input type="checkbox" name="vehicle${i}" id="vehicle${i}">
-								   	  <label for="vehicle${i}" data-jugaad="checkbox">${projectDetails[projectDetailsKeys[i]].projectName}</label>
+								   	  <input type="radio" name="${projectDetails[projectDetailsKeys[i]].projectName}" id="project${i}">
+								   	  <label for="project${i}">${projectDetails[projectDetailsKeys[i]].projectName}</label>
 								   </div>  
 								   <p>${projectDetails[projectDetailsKeys[i]].projectDescription}</p>`
 						projectlistContainer.innerHTML = projectlistContainer.innerHTML + newHtml
@@ -9618,6 +9628,7 @@
 					}
 
 				});
+
 
 			}).catch(error => console.error(error))
 
