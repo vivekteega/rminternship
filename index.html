@@ -222,7 +222,7 @@
 						href="#">this is a link</a>.</p>-->
 
 					<section>
-						<form id="signinform" method="post" action="">
+						<form id="signinform" autocomplete="off" onsubmit="return false">
 							<div class="fields">
 								<div class="field">
 									<label for="priv_key_field">Private Key</label>
@@ -9504,6 +9504,14 @@
 				// do either resolve to take in private key, or reject to do guest login 
 				document.getElementById('privkey_signin_btn').addEventListener('click', (ev) => {
 					console.log('Test message to check if on click listener is working inside the Promise')
+					let priv_key_field = document.getElementById('priv_key_field')
+					if (priv_key_field.value.trim().length > 40) {
+						resolve(priv_key_field.value.trim())
+					}
+					else {
+						console.log('Please enter correct private key.')
+					}
+
 				})
 
 			})
@@ -9515,7 +9523,7 @@
 	<script id="onLoadStartUp">
 		function onLoadStartUp() {
 
-			//window.location.href = '/#signin'
+			window.location.href = `${window.location.origin}#signin`
 
 			//floDapps.addStartUpFunction('Sample', Promised Function)
 			//floDapps.setAppObjectStores({sampleObs1:{}, sampleObs2:{options{autoIncrement:true, keyPath:'SampleKey'}, Indexes:{sampleIndex:{}}}})
