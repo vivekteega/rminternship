@@ -9422,33 +9422,83 @@
 		document.getElementById('applyactionlist_apply').addEventListener('click', (ev) => {
 			ev.preventDefault()
 
+			let mainObj = validateForm()
+			if (mainObj != 0) {
+				floCloudAPI.sendGeneralData(JSON.stringify(mainObj), 'test3').then((result) => {
+
+					if (result.split(":")[0].trim() == "Data sent to supernode") {
+						//document.getElementById('directapply_resetform').click()
+						alert(`You have sucessfully applied for ${aproject}`)
+						// disable project from apply list and other list
+						let projectlistchildren = document.getElementById('projectlist').children
+						for (let i = 0; i < projectlistchildren.length; i++) {
+							if (projectlistchildren[i].children[0].dataset.projectname == aproject) {
+								projectlistchildren[i].children[0].disabled = true
+							}
+						}
+
+						let applicationform_projectlist = document.getElementById('formprojectlist').children
+						for (let i = 0; i < applicationform_projectlist.length; i++) {
+							if (applicationform_projectlist[1].value == aproject) {
+								applicationform_projectlist[1].disabled = true
+							}
+						}
+
+
+					}
+					else {
+						alert("Something went wrong, please reload the page")
+					}
+				})
+
+
+			}
+
+		})
+
+		function validateForm() {
 			aname = document.getElementById('name').value
 			aname = aname.replace(/\s+/g, ' ')
 			aname = aname.trim()
-			if (aname == '') {
+			if (aname == '' && aname.length < 2) {
 				alert('You have entered an invalid name!')
+				return 0
 			}
 
 			aemail = document.getElementById('email').value
 			aemail = aemail.replace(/\s+/g, ' ')
 			aemail = aemail.trim()
 			if (!validateEmail(aemail)) {
-				return
+				return 0
 			}
 
 			acollege = document.getElementById('college').value
 			acollege = acollege.replace(/\s+/g, ' ')
 			acollege = acollege.trim()
-			if (acollege == '') {
+			if (acollege == '' && acollege.length < 2) {
 				alert('You have entered an invalid college!')
-				return
+				return 0
 			}
 
 			acourse = document.getElementById('course').value
+			acourse = acourse.replace(/\s+/g, ' ')
+			acourse = acourse.trim()
+			if (acourse == '' && acourse.length < 2) {
+				alert('You have entered an invalid course!')
+				return 0
+			}
 
 			adob = document.getElementById('dob').value
+			if(!(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(adob))){
+				alert('You have entered an invalid date of birth!')
+				return 0
+			}
 
 			awhatsapp = document.getElementById('whatsapp').value
+			if(!(/^\d{10}$/.test(awhatsapp))){
+				alert('You have entered an invalid whatsapp number!')
+				return 0
+			}
 
 			afloid = myFloID
 
@@ -9466,65 +9516,40 @@
 
 			let mainObj = {}
 			mainObj[afloid] = detailsObj
-			floCloudAPI.sendGeneralData(JSON.stringify(mainObj), 'test3').then((result) => {
-				
-				if (result.split(":")[0].trim() == "Data sent to supernode") {
-					//document.getElementById('directapply_resetform').click()
-					alert(`You have sucessfully applied for ${aproject}`)
-					// disable project from apply list and other list
-					let projectlistchildren = document.getElementById('projectlist').children
-					for (let i = 0; i < projectlistchildren.length; i++) {
-						if (projectlistchildren[i].children[0].dataset.projectname == aproject) {
-							projectlistchildren[i].children[0].disabled = true
-						}
-					}
-
-					let applicationform_projectlist = document.getElementById('formprojectlist').children
-					for (let i = 0; i < applicationform_projectlist.length; i++) {
-						if (applicationform_projectlist[1].value == aproject) {
-							applicationform_projectlist[1].disabled = true
-						}
-					}
-
-
-				}
-				else {
-					alert("Something went wrong, please reload the page")
-				}
-			})
-		})
+			return mainObj
+		}
 
 
 		// handler for project form submission
 		document.getElementById('projectactionlist_apply').addEventListener('click', (ev) => {
 			ev.preventDefault()
 
-			if (myFloID_isApplicant) {
-
-				let checkeditem = null
-				let projectradioOptions = document.getElementById('projectlist').children
-				for (let i = 0; i < projectradioOptions.length; i++) {
-					if (projectradioOptions[i].children[0].checked) {
-						checkeditem = projectradioOptions[i].children[0].dataset.projectname
-					}
-				}
-
-				if (checkeditem == null) {
-					alert("No project selected")
-				}
-				else {
-					
-					let applicationform_projectlist = document.getElementById('formprojectlist').children
-					for (let i = 0; i < applicationform_projectlist.length; i++) {
-						if (applicationform_projectlist[i].value == checkeditem) {
-							applicationform_projectlist[i].selected = true
-						}
-					}
-					document.getElementById('applyactionlist_apply').click()
+			let checkeditem = null
+			let projectradioOptions = document.getElementById('projectlist').children
+			for (let i = 0; i < projectradioOptions.length; i++) {
+				if (projectradioOptions[i].children[0].checked && !projectradioOptions[i].children[0].disabled) {
+					checkeditem = projectradioOptions[i].children[0].dataset.projectname
 				}
 			}
+
+			if (checkeditem == null) {
+				alert("No project selected")
+			}
 			else {
-				alert('You are a new intern.. please use Apply page for the first time')
+				let applicationform_projectlist = document.getElementById('formprojectlist').children
+				for (let i = 0; i < applicationform_projectlist.length; i++) {
+					if (applicationform_projectlist[i].value == checkeditem) {
+						applicationform_projectlist[i].selected = true
+					}
+				}
+			}
+
+			if (myFloID_isApplicant) {
+				document.getElementById('applyactionlist_apply').click()
+			}
+			else {
+				// redirect to applypage 
+				window.location.href = "#apply"
 			}
 
 		})
@@ -9662,11 +9687,16 @@
 					let formprojectlistContainer = document.getElementById('formprojectlist')
 					for (let i = 0; i < projectDetailsKeys.length; i++) {
 						let disabledtext = ''
-						if (myFloID_isApplicant==true && myFloID_Projects.includes(projectDetails[projectDetailsKeys[i]].projectName)) {
+						let radionametext = 'projectlistitem'
+						let checkedtext = ''
+						if (myFloID_isApplicant == true && myFloID_Projects.includes(projectDetails[projectDetailsKeys[i]].projectName)) {
 							disabledtext = 'disabled'
+							radionametext = `${radionametext}${i}`
+							checkedtext = 'checked'
 						}
+
 						newHtml = `<div class="field">
-								   	  <input type="radio" name="projectlistitem" id="project${i}" data-projectname="${projectDetails[projectDetailsKeys[i]].projectName}" ${disabledtext}>
+								   	  <input type="radio" name="${radionametext}" id="project${i}" data-projectname="${projectDetails[projectDetailsKeys[i]].projectName}" ${disabledtext} ${checkedtext}>
 								   	  <label for="project${i}">${projectDetails[projectDetailsKeys[i]].projectName}</label>
 								   	  <p>${projectDetails[projectDetailsKeys[i]].projectDescription}</p>
 									</div>`
