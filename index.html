@@ -88,17 +88,13 @@
 			<article id="intro">
 				<h2 class="major">Intro</h2>
 				<span class="image main"><img src="images/pic01.jpg" alt="" /></span>
-				<p>Aenean ornare velit lacus, ac varius enim ullamcorper eu. Proin aliquam facilisis ante interdum
-					congue. Integer mollis, nisl amet convallis, porttitor magna ullamcorper, amet egestas mauris. Ut
-					magna finibus nisi nec lacinia. Nam maximus erat id euismod egestas. By the way, check out my <a
-						href="#work">awesome work</a>.</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent
-					taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique
-					libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut
-					ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor.
-					Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique
-					senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus.
-					Pellentesque aliquam maximus risus, vel sed vehicula.</p>
+				<p>Apply for Internship Projects in RanchiMall</p>
+
+				<p>You will create FLO Blockchain ID, and its attached private key. </p>
+
+				<p>Your details will be linked to your FLO ID</p>
+
+				<p>Keep the Private Key very safe. Do not share with anyone.</p>
 			</article>
 
 			<!-- Project List & information -->
@@ -106,8 +102,12 @@
 
 				<h2 class="major">Projects</h2>
 				<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
-				<p>This is some random text which will be replaced with much more creative introduction to the Project
-					List</p>
+				<p>Dear Marwari College Students,<br> We are offering Blockchain Content Creation Project. In this
+					project, a team will find hot topics from Twitter and Google, and decide on a topic. You will have
+					to create content related to that topic. Finally the content will be published in <a
+						href='https://ranchimall.github.io/articles' style='text-decoration: none;'
+						target='_blank'><strong>RanchiMall Times</strong></strong></a>
+					You will learn how to write good content, and how to market them.</p>
 				<form id="projectform" autocomplete="off" onsubmit="return false">
 					<div class="fields" id='projectlist'>
 					</div>
@@ -9424,7 +9424,7 @@
 
 			let mainObj = validateForm()
 			if (mainObj != 0) {
-				floCloudAPI.sendGeneralData(JSON.stringify(mainObj), 'test3').then((result, mainObj) => {
+				floCloudAPI.sendGeneralData(JSON.stringify(mainObj), 'test4').then((result, mainObj) => {
 
 					if (result.split(":")[0].trim() == "Data sent to supernode") {
 						//document.getElementById('directapply_resetform').click()
@@ -9451,7 +9451,7 @@
 								<td>${myFloID}</td>
 								<td>${aproject}</td>
 							</tr>`
-					
+
 
 					}
 					else {
@@ -9465,52 +9465,72 @@
 		})
 
 		function validateForm() {
+
+			var encryption_pubkey = '0362A48A86B7F82AA76A177DD60A1222AD477ACAE5C5AD2C6229F14C78CE2BD2B7'
+
 			aname = document.getElementById('name').value
-			aname = aname.replace(/\s+/g, ' ')
-			aname = aname.trim()
-			if (aname == '' || aname.length < 2) {
-				alert('You have entered an invalid name!')
-				return 0
-			}
-
 			aemail = document.getElementById('email').value
-			aemail = aemail.replace(/\s+/g, ' ')
-			aemail = aemail.trim()
-			if (!validateEmail(aemail)) {
-				return 0
-			}
-
 			acollege = document.getElementById('college').value
-			acollege = acollege.replace(/\s+/g, ' ')
-			acollege = acollege.trim()
-			if (acollege == '' || acollege.length < 2) {
-				alert('You have entered an invalid college!')
-				return 0
-			}
-
 			acourse = document.getElementById('course').value
-			acourse = acourse.replace(/\s+/g, ' ')
-			acourse = acourse.trim()
-			if (acourse == '' || acourse.length < 2) {
-				alert('You have entered an invalid course!')
-				return 0
-			}
-
 			adob = document.getElementById('dob').value
-			if(!(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(adob))){
-				alert('You have entered an invalid date of birth!')
-				return 0
-			}
-
 			awhatsapp = document.getElementById('whatsapp').value
-			if(!(/^\d{10}$/.test(awhatsapp))){
-				alert('You have entered an invalid whatsapp number!')
-				return 0
+			afloid = myFloID
+			aproject = document.getElementById('formprojectlist').value
+
+
+			if (!myFloID_isApplicant) {
+				// name validation 
+				aname = aname.replace(/\s+/g, ' ')
+				aname = aname.trim()
+				if (aname == '' || aname.length < 2) {
+					alert('You have entered an invalid name!')
+					return 0
+				}
+
+
+				// email validation
+				aemail = aemail.replace(/\s+/g, ' ')
+				aemail = aemail.trim()
+				if (!validateEmail(aemail)) {
+					return 0
+				}
+				aemail = floCrypto.encryptData(aemail, encryption_pubkey)
+
+				//  college validation
+				acollege = acollege.replace(/\s+/g, ' ')
+				acollege = acollege.trim()
+				if (acollege == '' || acollege.length < 2) {
+					alert('You have entered an invalid college!')
+					return 0
+				}
+				acollege = floCrypto.encryptData(acollege, encryption_pubkey)
+
+
+				// couse validation 
+				acourse = acourse.replace(/\s+/g, ' ')
+				acourse = acourse.trim()
+				if (acourse == '' || acourse.length < 2) {
+					alert('You have entered an invalid course!')
+					return 0
+				}
+				acourse = floCrypto.encryptData(acourse, encryption_pubkey)
+
+				// date of birthyvalidation
+				if (!(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/.test(adob))) {
+					alert('You have entered an invalid date of birth!')
+					return 0
+				}
+				adob = floCrypto.encryptData(adob, encryption_pubkey)
+
+
+				// whatsapp validation
+				if (!(/^\d{10}$/.test(awhatsapp))) {
+					alert('You have entered an invalid whatsapp number!')
+					return 0
+				}
+				awhatsapp = floCrypto.encryptData(awhatsapp, encryption_pubkey)
 			}
 
-			afloid = myFloID
-
-			aproject = document.getElementById('formprojectlist').value
 
 			let detailsObj = {
 				'name': aname,
@@ -9632,14 +9652,14 @@
 				//App functions....
 
 				let ribcAppdata = floCloudAPI.requestObjectData('RIBC', options = { senderIDs: false, receiverID: "FMeiptdJNtYQEtzyYAVNP8fjsDJ1i4EPfE", application: 'RIBC' })
-				let ribcGendata = floCloudAPI.requestGeneralData('test3')
+				let ribcGendata = floCloudAPI.requestGeneralData('test4')
 
 				Promise.all([ribcAppdata, ribcGendata]).then((values) => {
-					console.log("Hey I'm here, the promises just got resolved")
+					console.log("The promises just got resolved")
 					console.log(values)
 
 					// User list related operations 
-					let applicants_InformationArray = floGlobals.generalData['{"application":"TEST_MODE","type":"test3"}']
+					let applicants_InformationArray = floGlobals.generalData['{"application":"TEST_MODE","type":"test4"}']
 					let applicantsIDarray = []
 					let projectlisttablebody = document.getElementById('projectlisttablebody')
 					for (let i = 0; i < applicants_InformationArray.length; i++) {
@@ -9663,7 +9683,7 @@
 							if (myFloID == applicants_InformationArray[i]['sender']) {
 								var temp = JSON.parse(applicants_InformationArray[i]['message'])
 								myFloID_Projects.push(temp[myFloID]['project'])
-								
+
 								// force user to not change his details if he already exists
 								if (tcounter == 0) {
 									document.getElementById('name').value = temp[myFloID]['name']
@@ -9689,7 +9709,11 @@
 					}
 
 					// Project list related operations
-					let projectDetails = floGlobals.appObjects.RIBC.projectDetails
+					// todo : remove this hard coded stuff later on
+					let projectDetails1 = floGlobals.appObjects.RIBC.projectDetails
+					let projectDetails = {}
+					projectDetails["2020_project_4"] = projectDetails1["2020_project_4"]
+					delete (projectDetails1)
 					let projectDetailsKeys = Object.keys(projectDetails)
 
 					let projectlistContainer = document.getElementById('projectlist')
