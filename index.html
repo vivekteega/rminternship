@@ -61,7 +61,7 @@
 				<div class="inner">
 					<h1>Internships @ RanchiMall</h1>
 					<h4 id='welcome_message_top'></h4>
-					<h3 id='welcome_message_bottom'></h3>					
+					<h3 id='welcome_message_bottom'></h3>
 					<!--<p>A fully responsive site template designed by <a href="https://html5up.net">HTML5 UP</a> and
 						released<br />
 						for free under the <a href="https://html5up.net/license">Creative Commons</a> license.</p>-->
@@ -101,37 +101,29 @@
 					Pellentesque aliquam maximus risus, vel sed vehicula.</p>
 			</article>
 
-			<!-- Work -->
+			<!-- Project List & information -->
 			<article id="projects">
+
 				<h2 class="major">Projects</h2>
 				<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
 				<p>This is some random text which will be replaced with much more creative introduction to the Project
 					List</p>
-				<form method="post" action="#" id='projectform'>
-					<div id='projectlist'>
+				<form id="projectform" autocomplete="off" onsubmit="return false">
+					<div class="fields" id='projectlist'>
 					</div>
 					<ul id='projectactionlist' class="actions" style="display:none">
-						<li><input type="submit" value="Apply" /></li>
-						<li><input type="reset" value="Reset" id='resetform' /></li>
+						<li><input type="submit" value="Apply" id="projectactionlist_apply" /></li>
+						<li><input type="reset" value="Reset" id='projectresetform' /></li>
 					</ul>
 				</form>
+
+
 			</article>
 
-			<!-- About -->
-			<article id="about">
-				<h2 class="major">About</h2>
-				<span class="image main"><img src="images/pic03.jpg" alt="" /></span>
-				<p>Lorem ipsum dolor sit amet, consectetur et adipiscing elit. Praesent eleifend dignissim arcu, at
-					eleifend sapien imperdiet ac. Aliquam erat volutpat. Praesent urna nisi, fringila lorem et vehicula
-					lacinia quam. Integer sollicitudin mauris nec lorem luctus ultrices. Aliquam libero et malesuada
-					fames ac ante ipsum primis in faucibus. Cras viverra ligula sit amet ex mollis mattis lorem ipsum
-					dolor sit amet.</p>
-			</article>
-
-			<!-- Contact -->
+			<!-- Apply for project -->
 			<article id="apply">
 				<h2 class="major">Apply</h2>
-				<form method="post" action="#" id='applicationform'>
+				<form id='applicationform' autocomplete="off" onsubmit="return false">
 					<div class="fields">
 						<div class="field half">
 							<label for="name">Name</label>
@@ -174,8 +166,8 @@
 						</div> -->
 					</div>
 					<ul class="actions">
-						<li><input type="submit" value="Apply" class="primary" /></li>
-						<li><input type="reset" value="Reset" id='resetform' /></li>
+						<li><input type="submit" value="Apply" class="primary" id="applyactionlist_apply" /></li>
+						<li><input type="reset" value="Reset" id='directapply_resetform' /></li>
 					</ul>
 				</form>
 				<!--<ul class="icons">
@@ -189,7 +181,7 @@
 				</ul>-->
 			</article>
 
-			<!-- List -->
+			<!-- List of all applicants -->
 			<article id="list">
 				<h2 class="major">Applicant List</h2>
 
@@ -9427,7 +9419,7 @@
 		}
 
 		// Handler for Applicant form submission
-		document.getElementById('applicationform').addEventListener('submit', (ev) => {
+		document.getElementById('applyactionlist_apply').addEventListener('click', (ev) => {
 			ev.preventDefault()
 
 			aname = document.getElementById('name').value
@@ -9474,10 +9466,68 @@
 
 			let mainObj = {}
 			mainObj[afloid] = detailsObj
-			floCloudAPI.sendGeneralData(JSON.stringify(mainObj), 'test2')
-			document.getElementById('resetform').click()
+			floCloudAPI.sendGeneralData(JSON.stringify(mainObj), 'test3').then((result) => {
+				
+				if (result.split(":")[0].trim() == "Data sent to supernode") {
+					//document.getElementById('directapply_resetform').click()
+					alert(`You have sucessfully applied for ${aproject}`)
+					// disable project from apply list and other list
+					let projectlistchildren = document.getElementById('projectlist').children
+					for (let i = 0; i < projectlistchildren.length; i++) {
+						if (projectlistchildren[i].children[0].dataset.projectname == aproject) {
+							projectlistchildren[i].children[0].disabled = true
+						}
+					}
+
+					let applicationform_projectlist = document.getElementById('formprojectlist').children
+					for (let i = 0; i < applicationform_projectlist.length; i++) {
+						if (applicationform_projectlist[1].value == aproject) {
+							applicationform_projectlist[1].disabled = true
+						}
+					}
+
+
+				}
+				else {
+					alert("Something went wrong, please reload the page")
+				}
+			})
 		})
 
+
+		// handler for project form submission
+		document.getElementById('projectactionlist_apply').addEventListener('click', (ev) => {
+			ev.preventDefault()
+
+			if (myFloID_isApplicant) {
+
+				let checkeditem = null
+				let projectradioOptions = document.getElementById('projectlist').children
+				for (let i = 0; i < projectradioOptions.length; i++) {
+					if (projectradioOptions[i].children[0].checked) {
+						checkeditem = projectradioOptions[i].children[0].dataset.projectname
+					}
+				}
+
+				if (checkeditem == null) {
+					alert("No project selected")
+				}
+				else {
+					
+					let applicationform_projectlist = document.getElementById('formprojectlist').children
+					for (let i = 0; i < applicationform_projectlist.length; i++) {
+						if (applicationform_projectlist[i].value == checkeditem) {
+							applicationform_projectlist[i].selected = true
+						}
+					}
+					document.getElementById('applyactionlist_apply').click()
+				}
+			}
+			else {
+				alert('You are a new intern.. please use Apply page for the first time')
+			}
+
+		})
 
 		// Handler to generate new priv key pair
 		document.getElementById("generatenewflopair").addEventListener('click', (ev) => {
@@ -9547,46 +9597,22 @@
 				document.getElementById('floid').value = myFloID
 
 				//App functions....
-				/*loadRIBC()
-					.then(loadres => {			
-					}) */
 
 				let ribcAppdata = floCloudAPI.requestObjectData('RIBC', options = { senderIDs: false, receiverID: "FMeiptdJNtYQEtzyYAVNP8fjsDJ1i4EPfE", application: 'RIBC' })
-				let ribcGendata = floCloudAPI.requestGeneralData('test2')
+				let ribcGendata = floCloudAPI.requestGeneralData('test3')
 
 				Promise.all([ribcAppdata, ribcGendata]).then((values) => {
 					console.log("Hey I'm here, the promises just got resolved")
 					console.log(values)
 
-					// Project list related operations
-					let projectDetails = floGlobals.appObjects.RIBC.projectDetails
-					let projectDetailsKeys = Object.keys(projectDetails)
-
-					let projectlistContainer = document.getElementById('projectlist')
-					let formprojectlistContainer = document.getElementById('formprojectlist')
-					for (let i = 0; i < projectDetailsKeys.length; i++) {
-
-						newHtml = `<div class="field">
-								   	  <input type="radio" name="${projectDetails[projectDetailsKeys[i]].projectName}" id="project${i}">
-								   	  <label for="project${i}">${projectDetails[projectDetailsKeys[i]].projectName}</label>
-								   </div>  
-								   <p>${projectDetails[projectDetailsKeys[i]].projectDescription}</p>`
-						projectlistContainer.innerHTML = projectlistContainer.innerHTML + newHtml
-
-						applicationformHtml = `<option value="${projectDetails[projectDetailsKeys[i]].projectName}">${projectDetails[projectDetailsKeys[i]].projectName}</option>`
-						formprojectlistContainer.innerHTML = formprojectlistContainer.innerHTML + applicationformHtml
-					}
-
-					document.getElementById('projectactionlist').style.display = 'flex'
-
 					// User list related operations 
-					let applicantsArray = floGlobals.generalData['{"application":"TEST_MODE","type":"test2"}']
+					let applicants_InformationArray = floGlobals.generalData['{"application":"TEST_MODE","type":"test3"}']
 					let applicantsIDarray = []
 					let projectlisttablebody = document.getElementById('projectlisttablebody')
-					for (let i = 0; i < applicantsArray.length; i++) {
-						let currentapplicantID = applicantsArray[i]['sender']
+					for (let i = 0; i < applicants_InformationArray.length; i++) {
+						let currentapplicantID = applicants_InformationArray[i]['sender']
 						applicantsIDarray.push(currentapplicantID)
-						let jsonMessage = JSON.parse(applicantsArray[i]['message'])
+						let jsonMessage = JSON.parse(applicants_InformationArray[i]['message'])
 
 						// appending application to applicant list
 						projectlisttablebody.innerHTML = projectlisttablebody.innerHTML +
@@ -9598,12 +9624,12 @@
 
 
 					if (applicantsIDarray.includes(myFloID)) {
-						window.isApplicant = true
-						window.applicantProjects = []
-						for (let i = 0; i < applicantsArray.length; i++) {
-							if (myFloID == applicantsArray[i]['sender']) {
-								var temp = JSON.parse(applicantsArray[i]['message'])
-								applicantProjects.push(temp[myFloID]['project'])
+						window.myFloID_isApplicant = true
+						window.myFloID_Projects = []
+						for (let i = 0; i < applicants_InformationArray.length; i++) {
+							if (myFloID == applicants_InformationArray[i]['sender']) {
+								var temp = JSON.parse(applicants_InformationArray[i]['message'])
+								myFloID_Projects.push(temp[myFloID]['project'])
 
 								// force user to not change his details if he already exists
 								if (i == 0) {
@@ -9619,23 +9645,46 @@
 									document.getElementById('dob').readOnly = true
 									document.getElementById('whatsapp').value = temp[myFloID]['whatsapp']
 									document.getElementById('whatsapp').readOnly = true
+									document.getElementById('directapply_resetform').style.display = 'none'
 								}
 							}
 						}
 					}
 					else {
-						window.isApplicant = false
+						window.myFloID_isApplicant = false
 					}
+
+					// Project list related operations
+					let projectDetails = floGlobals.appObjects.RIBC.projectDetails
+					let projectDetailsKeys = Object.keys(projectDetails)
+
+					let projectlistContainer = document.getElementById('projectlist')
+					let formprojectlistContainer = document.getElementById('formprojectlist')
+					for (let i = 0; i < projectDetailsKeys.length; i++) {
+						let disabledtext = ''
+						if (myFloID_isApplicant==true && myFloID_Projects.includes(projectDetails[projectDetailsKeys[i]].projectName)) {
+							disabledtext = 'disabled'
+						}
+						newHtml = `<div class="field">
+								   	  <input type="radio" name="projectlistitem" id="project${i}" data-projectname="${projectDetails[projectDetailsKeys[i]].projectName}" ${disabledtext}>
+								   	  <label for="project${i}">${projectDetails[projectDetailsKeys[i]].projectName}</label>
+								   	  <p>${projectDetails[projectDetailsKeys[i]].projectDescription}</p>
+									</div>`
+
+						projectlistContainer.innerHTML = projectlistContainer.innerHTML + newHtml
+
+						// Apply form
+						applicationformHtml = `<option value="${projectDetails[projectDetailsKeys[i]].projectName}" ${disabledtext}>${projectDetails[projectDetailsKeys[i]].projectName}</option>`
+						formprojectlistContainer.innerHTML = formprojectlistContainer.innerHTML + applicationformHtml
+					}
+
+					document.getElementById('projectactionlist').style.display = 'flex'
 
 				});
 
 
 			}).catch(error => console.error(error))
 
-		}
-
-		function checkboxBehaviour() {
-			console.log('I just clicked a checkbox')
 		}
 
 	</script>
