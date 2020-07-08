@@ -9581,7 +9581,7 @@
 	<script id="onLoadStartUp">
 		function onLoadStartUp() {
 
-			window.location.href = `${window.location.origin}#signin`
+			window.location.href = `${window.location.origin}${window.location.pathname}#signin`
 			document.querySelector("#signin .close").style.display = 'none'
 
 			//floDapps.addStartUpFunction('Sample', Promised Function)
