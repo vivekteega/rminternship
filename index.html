@@ -9424,7 +9424,7 @@
 
 			let mainObj = validateForm()
 			if (mainObj != 0) {
-				floCloudAPI.sendGeneralData(JSON.stringify(mainObj), 'test3').then((result) => {
+				floCloudAPI.sendGeneralData(JSON.stringify(mainObj), 'test3').then((result, mainObj) => {
 
 					if (result.split(":")[0].trim() == "Data sent to supernode") {
 						//document.getElementById('directapply_resetform').click()
@@ -9444,6 +9444,14 @@
 							}
 						}
 
+						let projectlisttablebody = document.getElementById('projectlisttablebody')
+						// appending application to applicant list
+						projectlisttablebody.innerHTML = projectlisttablebody.innerHTML +
+							`<tr>
+								<td>${myFloID}</td>
+								<td>${aproject}</td>
+							</tr>`
+					
 
 					}
 					else {
@@ -9460,7 +9468,7 @@
 			aname = document.getElementById('name').value
 			aname = aname.replace(/\s+/g, ' ')
 			aname = aname.trim()
-			if (aname == '' && aname.length < 2) {
+			if (aname == '' || aname.length < 2) {
 				alert('You have entered an invalid name!')
 				return 0
 			}
@@ -9475,7 +9483,7 @@
 			acollege = document.getElementById('college').value
 			acollege = acollege.replace(/\s+/g, ' ')
 			acollege = acollege.trim()
-			if (acollege == '' && acollege.length < 2) {
+			if (acollege == '' || acollege.length < 2) {
 				alert('You have entered an invalid college!')
 				return 0
 			}
@@ -9483,7 +9491,7 @@
 			acourse = document.getElementById('course').value
 			acourse = acourse.replace(/\s+/g, ' ')
 			acourse = acourse.trim()
-			if (acourse == '' && acourse.length < 2) {
+			if (acourse == '' || acourse.length < 2) {
 				alert('You have entered an invalid course!')
 				return 0
 			}
@@ -9647,17 +9655,17 @@
 							</tr>`
 					}
 
-
 					if (applicantsIDarray.includes(myFloID)) {
 						window.myFloID_isApplicant = true
 						window.myFloID_Projects = []
+						var tcounter = 0
 						for (let i = 0; i < applicants_InformationArray.length; i++) {
 							if (myFloID == applicants_InformationArray[i]['sender']) {
 								var temp = JSON.parse(applicants_InformationArray[i]['message'])
 								myFloID_Projects.push(temp[myFloID]['project'])
-
+								
 								// force user to not change his details if he already exists
-								if (i == 0) {
+								if (tcounter == 0) {
 									document.getElementById('name').value = temp[myFloID]['name']
 									document.getElementById('name').readOnly = true
 									document.getElementById('email').value = temp[myFloID]['email']
@@ -9671,6 +9679,7 @@
 									document.getElementById('whatsapp').value = temp[myFloID]['whatsapp']
 									document.getElementById('whatsapp').readOnly = true
 									document.getElementById('directapply_resetform').style.display = 'none'
+									tcounter = tcounter + 1
 								}
 							}
 						}
