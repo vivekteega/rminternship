@@ -44,6 +44,129 @@
 			generalVC: {}
 		}
 	</script>
+	<style>
+		#svgsection {
+			width: 200px;
+			margin: 0 auto;
+			padding: 20px;
+		}
+
+		.spinner {
+			animation: rotate 1.4s linear infinite;
+			-webkit-animation: rotate 1.4s linear infinite;
+			-moz-animation: rotate 1.4s linear infinite;
+			width: 174px;
+			height: 174px;
+			position: relative;
+		}
+
+		.spinner-dot {
+			width: 274px;
+			height: 274px;
+			position: relative;
+			top: 0;
+		}
+
+
+		@keyframes rotate {
+			to {
+				transform: rotate(360deg);
+			}
+		}
+
+		@-webkit-keyframes rotate {
+			to {
+				-webkit-transform: rotate(360deg);
+			}
+		}
+
+		@-moz-keyframes rotate {
+			to {
+				transform: rotate(360deg);
+			}
+		}
+
+		.path {
+			stroke-dasharray: 170;
+			stroke-dashoffset: 20;
+		}
+
+		.svgsvg {
+  width: 100px;
+  display: block;
+  margin: 40px auto 0;
+}
+
+.svgpath {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 0;
+  &.svgcircle {
+    -webkit-animation: dash .9s ease-in-out;
+    animation: dash .9s ease-in-out;
+  }
+  &.svgline {
+    stroke-dashoffset: 1000;
+    -webkit-animation: dash .9s .35s ease-in-out forwards;
+    animation: dash .9s .35s ease-in-out forwards;
+  }
+  &.svgcheck {
+    stroke-dashoffset: -100;
+    -webkit-animation: dash-check .9s .35s ease-in-out forwards;
+    animation: dash-check .9s .35s ease-in-out forwards;
+  }
+}
+         
+.svgp {
+  text-align: center;
+  margin: 20px 0 60px;
+  font-size: 1.25em;
+  &.svgsuccess {
+    color: #73AF55;
+  }
+  &.svgerror {
+    color: #D06079;
+  }
+}
+
+
+@-webkit-keyframes svgdash {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes svgdash {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@-webkit-keyframes svgdash-check {
+  0% {
+    stroke-dashoffset: -100;
+  }
+  100% {
+    stroke-dashoffset: 900;
+  }
+}
+
+@keyframes svgdash-check {
+  0% {
+    stroke-dashoffset: -100;
+  }
+  100% {
+    stroke-dashoffset: 900;
+  }
+}
+
+
+	</style>
 </head>
 
 <body class="is-preload" onload="onLoadStartUp()">
@@ -78,12 +201,14 @@
 					<li><a href="#apply">Apply</a></li>
 					<!--<li><a href="#elements">Elements</a></li>-->
 					<li><a href="#list">List</a></li>
+					<li><a href="#intern">Intern</a></li>
 				</ul>
 			</nav>
 		</header>
 
 		<!-- Main -->
 		<div id="main">
+
 			<!-- Intro -->
 			<article id="intro">
 				<h2 class="major">Intro</h2>
@@ -118,68 +243,111 @@
 					</ul>
 				</form>
 
-
 			</article>
 
 			<!-- Apply for project -->
 			<article id="apply">
-				<h2 class="major">Apply</h2>
-				<form id='applicationform' autocomplete="off" onsubmit="return false">
-					<div class="fields">
-						<div class="field half">
-							<label for="name">Name</label>
-							<input type="text" name="name" id="name" />
-						</div>
-						<div class="field half">
-							<label for="email">Email</label>
-							<input type="text" name="email" id="email" />
-						</div>
-						<div class="field half">
-							<label for="college">College</label>
-							<input type="text" name="college" id="college" />
-						</div>
-						<div class="field half">
-							<label for="course">Course</label>
-							<input type="text" name="course" id="course" />
-						</div>
-						<div class="field half">
-							<label for="dob">DOB</label>
-							<input type="text" name="dob" id="dob" placeholder="DD/MM/YYYY" />
-						</div>
-						<div class="field half">
-							<label for="whatsapp">WhatsApp Number</label>
-							<input type="text" name="whatsapp" id="whatsapp" />
-						</div>
-						<div class="field half">
-							<label for="floid">FLO ID</label>
-							<input type="text" name="floid" id="floid" readonly />
-						</div>
-						<div class="field half">
-							<label for="floid">Project</label>
-							<!--<input type="text" name="floid" id="floid" />-->
-							<select name="formprojectlist" id="formprojectlist">
-								<option disabled selected value> -- select project -- </option>
-							</select>
-						</div>
-						<!--<div class="field" style='display:"none"'>
+				<div id="applytabmain">
+					<h2 class="major">Apply</h2>
+					<form id='applicationform' autocomplete="off" onsubmit="return false">
+						<div class="fields">
+							<div class="field half">
+								<label for="name">Name</label>
+								<input type="text" name="name" id="name" />
+							</div>
+							<div class="field half">
+								<label for="email">Email</label>
+								<input type="text" name="email" id="email" />
+							</div>
+							<div class="field half">
+								<label for="college">College</label>
+								<input type="text" name="college" id="college" />
+							</div>
+							<div class="field half">
+								<label for="course">Course</label>
+								<input type="text" name="course" id="course" />
+							</div>
+							<div class="field half">
+								<label for="dob">DOB</label>
+								<input type="text" name="dob" id="dob" placeholder="DD/MM/YYYY" />
+							</div>
+							<div class="field half">
+								<label for="whatsapp">WhatsApp Number</label>
+								<input type="text" name="whatsapp" id="whatsapp" placeholder="10  digit number" />
+							</div>
+							<div class="field half">
+								<label for="floid">FLO ID</label>
+								<input type="text" name="floid" id="floid" readonly />
+							</div>
+							<div class="field half">
+								<label for="floid">Project</label>
+								<!--<input type="text" name="floid" id="floid" />-->
+								<select name="formprojectlist" id="formprojectlist">
+									<option disabled selected value> -- select project -- </option>
+								</select>
+							</div>
+							<!--<div class="field" style='display:"none"'>
 							<label for="message">Message</label>
 							<textarea name="message" id="message" rows="4"></textarea>
 						</div> -->
-					</div>
-					<ul class="actions">
-						<li><input type="submit" value="Apply" class="primary" id="applyactionlist_apply" /></li>
-						<li><input type="reset" value="Reset" id='directapply_resetform' /></li>
-					</ul>
-				</form>
-				<!--<ul class="icons">
-					<li><a href="https://twitter.com/ranchimallFLO" target="_blank" class="icon brands fa-twitter"><span
-								class="label">Twitter</span></a></li>
-					<li><a href="https://facebook.com/ranchimall/" target="_blank"
-							class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-					<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-					<li><a href="https://github.com/ranchimall/" target="_blank" class="icon brands fa-github"><span
-								class="label">GitHub</span></a></li>
-				</ul>-->
+						</div>
+						<ul class="actions">
+							<li><input type="submit" value="Apply" class="primary" id="applyactionlist_apply" /></li>
+							<li><input type="reset" value="Reset" id='directapply_resetform' /></li>
+						</ul>
+					</form>
+				</div>
+				<div id="applytabwaiting" style='display: none;'>
+					<section id="svgsection">
+						<svg class="spinner" width="174px" height="174px" viewBox="0 0 66 66"
+							xmlns="http://www.w3.org/2000/svg">
+							<circle class="path" fill="transparent" stroke-width="2" cx="33" cy="33" r="30"
+								stroke="url(#gradient)" />
+							<linearGradient id="gradient">
+								<stop offset="50%" stop-color="#42d179" stop-opacity="1" />
+								<stop offset="65%" stop-color="#42d179" stop-opacity=".5" />
+								<stop offset="100%" stop-color="#42d179" stop-opacity="0" />
+							</linearGradient>
+							</circle>
+							<svg class="spinner-dot dot" width="5px" height="5px" viewBox="0 0 66 66"
+								xmlns="http://www.w3.org/2000/svg" x="37" y="1.5">
+								<circle class="path" fill="#42d179" cx="33" cy="33" r="30" />
+								</circle>
+							</svg>
+						</svg>
+					</section>
+					<h3 style="text-align:center; text-transform: initial;">Application sent to FLO Blockchain Cloud
+					</h3>
+					<h3 style="text-align:center; text-transform: initial;">Waiting for response</h3>
+				</div>
+				<div id="applytabsuccessful" class="svgshiz" style='display: none;'>
+					<section id="svgsectionsuccess">
+
+						<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2" class="svgsvg">
+							<circle class="svgpath svgcircle" fill="none" stroke="#73AF55" stroke-width="6"
+								stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" />
+							<polyline class="svgpath svgcheck" fill="none" stroke="#73AF55" stroke-width="6"
+								stroke-linecap="round" stroke-miterlimit="10"
+								points="100.2,40.2 51.5,88.8 29.8,67.5 " />
+						</svg>
+						<p class="svgsuccess svgp" >Success!!</p>
+					</section>
+					<h3 style="text-align:center; text-transform: initial;">Application has been recorded
+					</h3>
+				</div>
+				<div id="applytabfailure" class="svgshiz" style='display: none;'>
+					<section id="svgsectionfailure">
+
+						<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2" class="svgsvg">
+							<circle class="svgpath svgcircle" fill="none" stroke="#D06079" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+							<line class="svgpath svgline" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3"/>
+							<line class="svgpath svgline" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2"/>
+						  </svg>
+						  <p class="svgerror svgp">Bummer!</p>
+					</section>
+					<h3 style="text-align:center; text-transform: initial;">Please try again
+					</h3>
+				</div>
 			</article>
 
 			<!-- List of all applicants -->
@@ -201,6 +369,30 @@
 							</tbody>
 						</table>
 					</div>
+				</section>
+
+			</article>
+
+			<!-- List of alistll applicants -->
+			<article id="intern">
+				<h2 class="major">Intern Information</h2>
+
+				<section>
+					<label for="internfloid">Intern FLO ID</label>
+					<input type="text" name="internfloid" id="internfloid" value="" disabled />
+					<br>
+					<label for="internprivatekey">Private Key</label>
+					<input type="text" name="internprivatekey" id="internprivatekey" value="" disabled />
+				</section>
+				<section>
+					<p></p>
+					<p><strong>NEVER</strong> lose your Private Key<br>
+						<strong>NEVER</strong> share your Private Key with anyone<br><br>
+						Losing your Private Key means losing all the accomplishments, data & money attached to your
+						Internship ID. Private Key once lost can <strong>NEVER</strong> be recovered. Please store
+						it safely.
+					</p>
+					<h4></h4>
 				</section>
 
 			</article>
@@ -9408,7 +9600,7 @@
 			}
 		}
 
-		
+
 
 		async function fetchInternApplicants() {
 			let applicants = await floCloudAPI.requestGeneralData('test')
@@ -9419,12 +9611,25 @@
 			ev.preventDefault()
 
 			let mainObj = validateForm()
+
 			if (mainObj != 0) {
+
+				document.getElementById('applytabmain').style.display = 'none'
+				document.getElementById('applytabwaiting').style.display = 'initial'
+
 				floCloudAPI.sendGeneralData(JSON.stringify(mainObj), 'test4').then((result, mainObj) => {
+					
 
 					if (result.split(":")[0].trim() == "Data sent to supernode") {
 						//document.getElementById('directapply_resetform').click()
-						alert(`You have sucessfully applied for ${aproject}`)
+						document.getElementById('applytabwaiting').style.display = 'none'
+						document.getElementById('applytabsuccessful').style.display = 'initial'
+
+						setTimeout(function(){ 
+							document.getElementById('applytabsuccessful').style.display = 'none';
+							document.getElementById('applytabmain').style.display = 'initial'; 
+							window.location.href = "#list"; }, 2500)
+
 						// disable project from apply list and other list
 						let projectlistchildren = document.getElementById('projectlist').children
 						for (let i = 0; i < projectlistchildren.length; i++) {
@@ -9442,20 +9647,23 @@
 
 						let projectlisttablebody = document.getElementById('projectlisttablebody')
 						// appending application to applicant list
-						projectlisttablebody.innerHTML = projectlisttablebody.innerHTML +
+						projectlisttablebody.innerHTML = 
 							`<tr>
 								<td>${myFloID}</td>
 								<td>${aproject}</td>
-							</tr>`
+							</tr>` + projectlisttablebody.innerHTML
 
 
 					}
 					else {
-						alert("Something went wrong, please reload the page")
+
+						document.getElementById('applytabwaiting').style.display = 'none'
+						document.getElementById('applytabfailure').style.display = 'initial'
+						setTimeout(function(){ 
+							document.getElementById('applytabfailure').style.display = 'none';
+							document.getElementById('applytabmain').style.display = 'initial' }, 2500)
 					}
 				})
-
-
 			}
 
 		})
@@ -9623,8 +9831,8 @@
 				document.getElementById('privkey_signin_btn_alt').addEventListener('click', (ev) => {
 					document.getElementById('priv_key_field').value = document.getElementById("newprivatekey").value
 					document.getElementById('privkey_signin_btn').click()
-				})			
-			
+				})
+
 			})
 		}
 
@@ -9648,7 +9856,8 @@
 				document.querySelector("#signin .close").style.display = 'initial'
 				document.getElementById('welcome_message_top').innerText = `Welcome`
 				document.getElementById('welcome_message_bottom').innerText = `${myFloID}`
-				document.getElementById('floid').value = myFloID
+				document.getElementById('floid').value = document.getElementById('internfloid').value = myFloID
+				document.getElementById('internprivatekey').value = myPrivKey
 
 				//App functions....
 
@@ -9700,7 +9909,7 @@
 									document.getElementById('whatsapp').value = 'encrypted'
 									document.getElementById('whatsapp').readOnly = true
 									document.getElementById('directapply_resetform').style.display = 'none'
-									
+
 									tcounter = tcounter + 1
 								}
 							}
@@ -9720,7 +9929,7 @@
 
 					let projectlistContainer = document.getElementById('projectlist')
 					let formprojectlistContainer = document.getElementById('formprojectlist')
-					for (let i = 0; i < projectDetailsKeys.length; i++) {
+					for (let i = projectDetailsKeys.length -1; i >= 0; i++) {
 						let disabledtext = ''
 						let radionametext = 'projectlistitem'
 						let checkedtext = ''
