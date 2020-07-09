@@ -386,7 +386,7 @@
 				</section>
 				<section>
 					<p></p>
-					<p><strong>NEVER</strong> lose your Private Key<br>
+					<p>	<strong>NEVER</strong> lose your Private Key<br>
 						<strong>NEVER</strong> share your Private Key with anyone<br><br>
 						Losing your Private Key means losing all the accomplishments, data & money attached to your
 						Internship ID. Private Key once lost can <strong>NEVER</strong> be recovered. Please store
@@ -444,7 +444,8 @@
 					</section>
 					<section>
 						<p></p>
-						<p><strong>NEVER</strong> lose your Private Key<br>
+						<p><strong>SAVE</strong> the private key securely now before leaving<br>
+							<strong>NEVER</strong> lose your Private Key<br>
 							<strong>NEVER</strong> share your Private Key with anyone<br><br>
 							Losing your Private Key means losing all the accomplishments, data & money attached to your
 							Internship ID. Private Key once lost can <strong>NEVER</strong> be recovered. Please store
@@ -9927,10 +9928,11 @@
 					projectDetails["2020_project_4"] = projectDetails1["2020_project_4"]
 					delete (projectDetails1)
 					let projectDetailsKeys = Object.keys(projectDetails)
+					projectDetailsKeys = projectDetailsKeys.reverse()
 
 					let projectlistContainer = document.getElementById('projectlist')
 					let formprojectlistContainer = document.getElementById('formprojectlist')
-					for (let i = projectDetailsKeys.length -1; i >= 0; i++) {
+					for (let i = 0; i < projectDetailsKeys.length; i++) {
 						let disabledtext = ''
 						let radionametext = 'projectlistitem'
 						let checkedtext = ''
@@ -9953,6 +9955,7 @@
 						formprojectlistContainer.innerHTML = formprojectlistContainer.innerHTML + applicationformHtml
 					}
 
+					debugger
 					document.getElementById('projectactionlist').style.display = 'flex'
 
 				});
