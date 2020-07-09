@@ -61,7 +61,7 @@
 				<div class="inner">
 					<h1>Internships @ RanchiMall</h1>
 					<h4 id='welcome_message_top'></h4>
-					<h3 id='welcome_message_bottom'></h3>
+					<h3 id='welcome_message_bottom' style='text-transform: initial;'></h3>
 					<!--<p>A fully responsive site template designed by <a href="https://html5up.net">HTML5 UP</a> and
 						released<br />
 						for free under the <a href="https://html5up.net/license">Creative Commons</a> license.</p>-->
@@ -87,7 +87,7 @@
 			<!-- Intro -->
 			<article id="intro">
 				<h2 class="major">Intro</h2>
-				<span class="image main"><img src="images/pic01.jpg" alt="" /></span>
+				<span class="image main"><img src="images/pic04.jpg" alt="" /></span>
 				<p>Apply for Internship Projects in RanchiMall</p>
 
 				<p>You will create FLO Blockchain ID, and its attached private key. </p>
@@ -101,13 +101,14 @@
 			<article id="projects">
 
 				<h2 class="major">Projects</h2>
-				<span class="image main"><img src="images/pic02.jpg" alt="" /></span>
+				<span class="image main"><img src="images/projects.png" alt="" /></span>
 				<p>Dear Marwari College Students,<br> We are offering Blockchain Content Creation Project. In this
 					project, a team will find hot topics from Twitter and Google, and decide on a topic. You will have
 					to create content related to that topic. Finally the content will be published in <a
 						href='https://ranchimall.github.io/articles' style='text-decoration: none;'
 						target='_blank'><strong>RanchiMall Times</strong></strong></a>
 					You will learn how to write good content, and how to market them.</p>
+				<h4>Select Project</h4>
 				<form id="projectform" autocomplete="off" onsubmit="return false">
 					<div class="fields" id='projectlist'>
 					</div>
@@ -248,7 +249,6 @@
 							<br>
 							<label for="newprivatekey">Private Key</label>
 							<input type="text" name="newprivatekey" id="newprivatekey" value="" disabled />
-
 					</section>
 					<section>
 						<p></p>
@@ -258,6 +258,9 @@
 							Internship ID. Private Key once lost can <strong>NEVER</strong> be recovered. Please store
 							it safely.
 						</p>
+						<ul class="actions">
+							<li><input type="submit" value="Sign In" class="primary" id='privkey_signin_btn_alt' /></li>
+						</ul>
 						<h4></h4>
 					</section>
 				</div>
@@ -267,15 +270,6 @@
 
 		<!-- Footer -->
 		<footer id="footer">
-			<ul class="icons">
-				<li><a href="https://twitter.com/ranchimallFLO" target="_blank" class="icon brands fa-twitter"><span
-							class="label">Twitter</span></a></li>
-				<li><a href="https://facebook.com/ranchimall/" target="_blank" class="icon brands fa-facebook-f"><span
-							class="label">Facebook</span></a></li>
-				<!--<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>-->
-				<li><a href="https://github.com/ranchimall/" target="_blank" class="icon brands fa-github"><span
-							class="label">GitHub</span></a></li>
-			</ul>
 			<!--<p class="copyright">Design: <a href="https://html5up.net">HTML5 UP</a>.</p>-->
 			<p class="copyright" style="cursor: pointer;" id='logout_button'>Logout</p>
 		</footer>
@@ -9414,6 +9408,8 @@
 			}
 		}
 
+		
+
 		async function fetchInternApplicants() {
 			let applicants = await floCloudAPI.requestGeneralData('test')
 		}
@@ -9624,6 +9620,11 @@
 
 				})
 
+				document.getElementById('privkey_signin_btn_alt').addEventListener('click', (ev) => {
+					document.getElementById('priv_key_field').value = document.getElementById("newprivatekey").value
+					document.getElementById('privkey_signin_btn').click()
+				})			
+			
 			})
 		}
 
@@ -9688,17 +9689,18 @@
 								if (tcounter == 0) {
 									document.getElementById('name').value = temp[myFloID]['name']
 									document.getElementById('name').readOnly = true
-									document.getElementById('email').value = temp[myFloID]['email']
+									document.getElementById('email').value = 'encrypted'
 									document.getElementById('email').readOnly = true
-									document.getElementById('college').value = temp[myFloID]['college']
+									document.getElementById('college').value = 'encrypted'
 									document.getElementById('college').readOnly = true
-									document.getElementById('course').value = temp[myFloID]['course']
+									document.getElementById('course').value = 'encrypted'
 									document.getElementById('course').readOnly = true
-									document.getElementById('dob').value = temp[myFloID]['dob']
+									document.getElementById('dob').value = 'encrypted'
 									document.getElementById('dob').readOnly = true
-									document.getElementById('whatsapp').value = temp[myFloID]['whatsapp']
+									document.getElementById('whatsapp').value = 'encrypted'
 									document.getElementById('whatsapp').readOnly = true
 									document.getElementById('directapply_resetform').style.display = 'none'
+									
 									tcounter = tcounter + 1
 								}
 							}
