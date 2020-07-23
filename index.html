@@ -175,7 +175,25 @@
 		}
 	</style>
 
-<style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style>
+	<style>
+		.embed-container {
+			position: relative;
+			padding-bottom: 56.25%;
+			height: 0;
+			overflow: hidden;
+			max-width: 100%;
+		}
+
+		.embed-container iframe,
+		.embed-container object,
+		.embed-container embed {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+	</style>
 </head>
 
 <body class="is-preload" onload="onLoadStartUp()">
@@ -222,12 +240,15 @@
 			<article id="intro">
 				<h2 class="major">Intro</h2>
 				<span class="image main"><img src="images/projects.png" alt="" /></span>
-				<p>RanchiMall invites applications for Internship for Projects listed here. All applicants will need to generate their blockchain ID, and then store the private key safely to
+				<p>RanchiMall invites applications for Internship for Projects listed here. All applicants will need to
+					generate their blockchain ID, and then store the private key safely to
 					access our:
 					<ul>
-						<li><a href="https://ranchimall.github.io/internapply" target="_blank">Application Portal @ <em>ranchimall.github.io/internapply</em></a></li>
-						<li><a href="https://ranchimall.github.io/RIBC" target="_blank">Internship Portal @ <em>ranchimall.github.io/RIBC</em></a></li>
-					</ul> 
+						<li><a href="https://ranchimall.github.io/internapply" target="_blank">Application Portal @
+								<em>ranchimall.github.io/internapply</em></a></li>
+						<li><a href="https://ranchimall.github.io/RIBC" target="_blank">Internship Portal @
+								<em>ranchimall.github.io/RIBC</em></a></li>
+					</ul>
 					The process of applying and Internship is:
 				</p>
 
@@ -240,12 +261,16 @@
 					<li>First Task on Marketing, Actual Project Skills and Blockchain</li>
 					<li>Evaluator Feedback on first task; repeat of first task if standards are not met</li>
 					<li>Second Task on Marketing, Actual Project Skills and Blockchain</li>
-					<li>Evaluator and Consumer Feedback on second task; repeat of second task if standards are not met</li>
+					<li>Evaluator and Consumer Feedback on second task; repeat of second task if standards are not met
+					</li>
 					<li>Third Task on Marketing, Actual Project Skills and Blockchain</li>
-					<li>Consumer Feedback on task: In this phase the feedback will come from general users on Social Media; if feedback is not good, repeat the third task</li>
+					<li>Consumer Feedback on task: In this phase the feedback will come from general users on Social
+						Media; if feedback is not good, repeat the third task</li>
 					<li>Issuance of Competency Certificates to those whose complete third task</li>
-					<li>Stipend phase, to be selected among certificate holders - Four levels of stipend: Starter, Motivated, Passionate, Self Realized</li>
-					<li>Anyone who drops out can get participation certificate, indicating till what round he/she reached</li>
+					<li>Stipend phase, to be selected among certificate holders - Four levels of stipend: Starter,
+						Motivated, Passionate, Self Realized</li>
+					<li>Anyone who drops out can get participation certificate, indicating till what round he/she
+						reached</li>
 				</ol>
 
 				<h4>INTERNSHIP PHASE</h4>
@@ -279,15 +304,17 @@
 				</ul>
 
 				<p><em>Keep the Private Key very safe. Do not share with anyone.</em>
-				<br><br>
-				For any more details, tweet us at <a href="https://twitter.com/ranchimallflo" target="_blank">@ranchimallflo</a> and we will respond immediately</p>
+					<br><br>
+					For any more details, tweet us at <a href="https://twitter.com/ranchimallflo"
+						target="_blank">@ranchimallflo</a> and we will respond immediately</p>
 			</article>
 
 			<!-- Project List & information -->
 			<article id="projects">
 
 				<h2 class="major">Projects</h2>
-				<div class='embed-container'><iframe src='https://www.youtube.com/embed/CrfXqwy_d2I' frameborder='0' allowfullscreen></iframe></div>
+				<div class='embed-container'><iframe src='https://www.youtube.com/embed/CrfXqwy_d2I' frameborder='0'
+						allowfullscreen></iframe></div>
 				<br>
 				<h4>Select Project</h4>
 				<form id="projectform" autocomplete="off" onsubmit="return false">
@@ -4665,7 +4692,7 @@
 				var x = this.getX().toBigInteger();
 				var y = this.getY().toBigInteger();
 				var len =
-				32; // integerToBytes will zero pad if integer is less than 32 bytes. 32 bytes length is required by the Bitcoin protocol.
+					32; // integerToBytes will zero pad if integer is less than 32 bytes. 32 bytes length is required by the Bitcoin protocol.
 				var enc = ec.integerToBytes(x, len);
 
 				// when compressed prepend byte depending if y point is even or odd
@@ -4678,7 +4705,7 @@
 				} else {
 					enc.unshift(0x04);
 					enc = enc.concat(ec.integerToBytes(y,
-					len)); // uncompressed public key appends the bytes of the y point
+						len)); // uncompressed public key appends the bytes of the y point
 				}
 				return enc;
 			};
@@ -5143,7 +5170,7 @@
 				btrx.addflodata = function (txcomments) { // flochange - this whole function needs to be done
 					this.floData = txcomments;
 					return this
-					.floData; //flochange .. returning the txcomments -- check if the function return will assign
+						.floData; //flochange .. returning the txcomments -- check if the function return will assign
 				}
 
 
@@ -5456,7 +5483,7 @@
 
 
 					return Crypto.util.bytesToHex(buffer) + floDataCountString +
-					flohex; // flochange -- Addition of floDataCountString and floData in serialization
+						flohex; // flochange -- Addition of floDataCountString and floData in serialization
 				}
 
 
@@ -5687,7 +5714,7 @@
 		};
 
 		Bitcoin.Address.networkVersion =
-		0x23; // (FLO mainnet 0x23, 35D), (Bitcoin Mainnet, 0x00, 0D) // *this has no effect *
+			0x23; // (FLO mainnet 0x23, 35D), (Bitcoin Mainnet, 0x00, 0D) // *this has no effect *
 
 		/**
 		 * Serialize this object as a standard Bitcoin address.
@@ -6127,10 +6154,10 @@
 						// This part is edited for FLO. FLO WIF are always compressed WIF. FLO WIF (private key) starts with R for mainnet and c for testnet.
 						if (((floGlobals.blockchain == "FLO") &&
 								/^R[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{51}$/.test(input)
-								) ||
+							) ||
 							((floGlobals.blockchain == "FLO_TEST") &&
 								/^c[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{51}$/.test(input))
-							) {
+						) {
 							bytes = ECKey.decodeCompressedWalletImportFormat(input);
 							this.compressed = true;
 						} else if (ECKey.isHexFormat(input)) {
@@ -6428,11 +6455,11 @@
 			ECKey.isMiniFormat = function (key) {
 				key = key.toString();
 				var validChars22 = /^S[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{21}$/.test(
-				key);
+					key);
 				var validChars26 = /^S[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{25}$/.test(
-				key);
+					key);
 				var validChars30 = /^S[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{29}$/.test(
-				key);
+					key);
 				var testBytes = Crypto.SHA256(key + "?", {
 					asBytes: true
 				});
@@ -6961,7 +6988,7 @@
 				}
 
 				secret = '1' + hex2bin(
-				secret); // append a 1 so that we can preserve the correct number of leading zeros in our secret
+					secret); // append a 1 so that we can preserve the correct number of leading zeros in our secret
 				secret = split(secret, padLength);
 				var x = new Array(numShares),
 					y = new Array(numShares);
@@ -7156,9 +7183,9 @@
 							continue;
 						}
 						if (at === x[
-							j]) { // happens when computing a share that is in the list of shares used to compute it
+								j]) { // happens when computing a share that is in the list of shares used to compute it
 							product = -
-							1; // fix for a zero product term, after which the sum should be sum^0 = sum, not sum^1
+								1; // fix for a zero product term, after which the sum should be sum^0 = sum, not sum^1
 							break;
 						}
 						product = (product + config.logs[at ^ x[j]] - config.logs[x[i] ^ x[j]] + config
@@ -7167,7 +7194,8 @@
 					}
 
 					sum = product === -1 ? sum : sum ^ config.exps[
-					product]; // though exps[-1]= undefined and undefined ^ anything = anything in chrome, this behavior may not hold everywhere, so do the check
+						product
+					]; // though exps[-1]= undefined and undefined ^ anything = anything in chrome, this behavior may not hold everywhere, so do the check
 				}
 				return sum;
 			};
@@ -7330,7 +7358,7 @@
 								if (diff[key].hasOwnProperty(index)) {
 									acc2[index] = preserve(diff[key][index], leftArray[index],
 										rightArray[index]
-										); // diff recurse and check for nested arrays
+									); // diff recurse and check for nested arrays
 									return acc2;
 								}
 
@@ -7409,7 +7437,7 @@
 					const difference = diff(l[key], r[key]);
 
 					if (isObject(difference) && isEmpty(difference) && !isDate(difference))
-				return acc; // return no diff
+						return acc; // return no diff
 
 					return {
 						...acc,
@@ -7484,7 +7512,7 @@
 						}
 
 						return acc.slice(0, index).concat(rightItem).concat(acc.slice(index +
-						1)); // return updated key
+							1)); // return updated key
 					}, deletedValues);
 				}
 
@@ -7497,7 +7525,7 @@
 					const difference = diff(l[key], r[key]);
 
 					if (isObject(difference) && isEmpty(difference) && !isDate(difference))
-				return acc; // return no diff
+						return acc; // return no diff
 
 					return {
 						...acc,
@@ -8177,7 +8205,7 @@
 						for (let floID in senders) {
 							balance[floID] = parseFloat(results.shift());
 							if (isNaN(balance[floID]) || (preserveRatio && balance[floID] <=
-								totalFee) || (!preserveRatio && balance[floID] < senders[floID]
+									totalFee) || (!preserveRatio && balance[floID] < senders[floID]
 									.coins + dividedFee))
 								insufficient.push(floID)
 							totalBalance += balance[floID];
@@ -10079,8 +10107,10 @@
 									document.getElementById('dob').readOnly = true
 									document.getElementById('whatsapp').value = 'encrypted'
 									document.getElementById('whatsapp').readOnly = true
+									document.getElementById('applyactionlist_apply').style.display = 'none'
 									document.getElementById('directapply_resetform').style.display = 'none'
-
+									document.getElementById('applyactionlist_apply').disabled  = 'true'
+									document.getElementById('directapply_resetform').disabled  = 'true'
 									tcounter = tcounter + 1
 								}
 							}
