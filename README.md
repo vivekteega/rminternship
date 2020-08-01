@@ -1,1 +1,1 @@
-# rminternship
+# RanchiMall Internship
